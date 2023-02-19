@@ -1,0 +1,33 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+---
+spring:
+  profiles: mysql
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/everyoneparty
+    username: root
+    password: Rnjs@1q2w3e
+  batch:
+    jdbc:
+      initialize-schema: always # spring-batch-core 하위에 spring-batch 를 위한 메타 디비 스키마가 있음
+                                # always option -> 항상 스키마를 다시 생성한다는 설정
+                                # never option -> 미리 생성된 스키마 기반으로 도는 설정
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+
+
+
