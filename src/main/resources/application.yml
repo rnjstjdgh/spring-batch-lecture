@@ -20,9 +20,11 @@ spring:
     username: root
     password: Rnjs@1q2w3e
   batch:
+    job:
+      enabled: false
     jdbc:
       initialize-schema: always # spring-batch-core 하위에 spring-batch 를 위한 메타 디비 스키마가 있음
-                                # always option -> 항상 스키마를 다시 생성한다는 설정
+                                # always option -> 항상 스키마 생성 스크립트를 실행한다는 설정(드랍 후 다시만드는것은 아님)
                                 # never option -> 미리 생성된 스키마 기반으로 도는 설정
   jpa:
     properties:
