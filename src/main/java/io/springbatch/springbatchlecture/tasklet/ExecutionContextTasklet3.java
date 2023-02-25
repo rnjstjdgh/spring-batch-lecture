@@ -19,6 +19,9 @@ public class ExecutionContextTasklet3 implements Tasklet {
             throw new RuntimeException("step3 was failed");
         }
 
+        chunkContext.getStepContext().getStepExecution().getExecutionContext().put("name2", "user2");
+
+
         return RepeatStatus.FINISHED;
     }
 }
