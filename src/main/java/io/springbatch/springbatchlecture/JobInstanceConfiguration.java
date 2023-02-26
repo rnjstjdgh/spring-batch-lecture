@@ -26,6 +26,7 @@ public class JobInstanceConfiguration {
     private final ExecutionContextTasklet2 executionContextTasklet2;
     private final ExecutionContextTasklet3 executionContextTasklet3;
     private final ExecutionContextTasklet4 executionContextTasklet4;
+    private final JobRepositoryListner jobRepositoryListner;
 
     @Bean
     public Job job() {
@@ -34,6 +35,7 @@ public class JobInstanceConfiguration {
                 .next(step2())
                 .next(step3())
                 .next(step4())
+                .listener(jobRepositoryListner)
                 .build();
     }
 
