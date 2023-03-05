@@ -6,6 +6,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.job.DefaultJobParametersValidator;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -21,9 +22,13 @@ public class JobConfiguration {
 
     @Bean
     public Job job2() {
+        String[] requiredKeys = {"name"};
+        String[] optionalKeys = {"app"};
         return jobBuilderFactory.get("job2")
                 .start(step1())
                 .next(step2())
+                .validator(new DefaultJobParametersValidator(requiredKeys, optionalKeys))
+//                .preventRestart()
                 .build();
     }
 
