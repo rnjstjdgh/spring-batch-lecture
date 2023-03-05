@@ -1,4 +1,4 @@
-package io.springbatch.springbatchlecture.tasklet;
+package io.springbatch.springbatchlecture.job1.tasklet;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -8,27 +8,21 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExecutionContextTasklet1 implements Tasklet {
+public class ExecutionContextTasklet2 implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        System.out.println("step1 was executed");
+        System.out.println("step2 was executed");
 
         ExecutionContext jobExecutionContext = stepContribution.getStepExecution().getJobExecution().getExecutionContext();
         ExecutionContext stepExecutionContext = stepContribution.getStepExecution().getExecutionContext();
 
-        String jobName = chunkContext.getStepContext().getStepExecution().getJobExecution().getJobInstance().getJobName();
+        System.out.println("jobName: " + jobExecutionContext.get("jobName"));
+        System.out.println("stepName: " + stepExecutionContext.get("stepName"));
+
         String stepName = chunkContext.getStepContext().getStepExecution().getStepName();
-
-        if(jobExecutionContext.get("jobName") == null) {
-            jobExecutionContext.put("jobName", jobName);
-        }
-
         if(stepExecutionContext.get("stepName") == null) {
             stepExecutionContext.put("stepName", stepName);
         }
-
-        System.out.println("jobName: " + jobExecutionContext.get("jobName"));
-        System.out.println("stepName: " + stepExecutionContext.get("stepName"));
 
         return RepeatStatus.FINISHED;
     }
