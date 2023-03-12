@@ -9,6 +9,7 @@ import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.FlowBuilder;
 import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.item.*;
@@ -39,6 +40,7 @@ public class JobInstanceConfiguration {
                 .build();
     }
 
+    @StepScope
     @Bean
     public Step step1() {
         return stepBuilderFactory.get("step1")
