@@ -18,4 +18,9 @@ public class Customer {
     private String lastName;
 
     private String birthdate;
+
+    @Override
+    public String toString() {
+        return "id: " + id + ", firstName: " + firstName + ", lastName: " + lastName + ", birthdate: " + birthdate;
+    }
 }

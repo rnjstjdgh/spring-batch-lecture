@@ -21,7 +21,7 @@ public class JobRunner3 implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
-                .addString("name", "6")
+                .addString("name", "23")
                 .toJobParameters();
 
         jobLauncher.run(job3, jobParameters);
