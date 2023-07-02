@@ -5,18 +5,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaCursorItemReader;
-import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
-import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.item.database.JpaPagingItemReader;
+import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,36 +22,33 @@ public class Job3Configuration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
+    private final TestItemWriter testItemWriter;
 
     @Bean
-    public Job job3() {
-        return jobBuilderFactory.get("job3")
-                .start(step33())
+    public Job testJob() {
+        return jobBuilderFactory.get("testJob")
+                .start(testStep())
                 .build();
     }
 
     @Bean
-    public Step step33() {
-        return stepBuilderFactory.get("step33")
-                .<Customer, String>chunk(3)
+    @JobScope
+    public Step testStep() {
+        return stepBuilderFactory.get("testStep")
+                .<Customer, Customer>chunk(3)
                 .reader(reader())
-                .writer(new ItemWriter<String>() {
-                    @Override
-                    public void write(List<? extends String> list) throws Exception {
-                        System.out.println(list);
-                    }
-                })
+                .writer(testItemWriter)
                 .build();
     }
 
     @Bean
-    public ItemReader reader() {
-        return new JpaCursorItemReaderBuilder()
-                .name("JpaCursorItemReaderBuilder")
+    @StepScope
+    public JpaPagingItemReader<Customer> reader() {
+        return new JpaPagingItemReaderBuilder<Customer>()
+                .name("JpaPagingItemReaderBuilder")
                 .queryString("select c from Customer c")
                 .entityManagerFactory(entityManagerFactory)
-//                .maxItemCount(6)
-                .currentItemCount(4)
+                .pageSize(3)
                 .build();
     }
 

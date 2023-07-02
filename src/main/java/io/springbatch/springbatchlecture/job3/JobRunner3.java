@@ -16,15 +16,15 @@ public class JobRunner3 implements ApplicationRunner {
     private JobLauncher jobLauncher;
 
     @Autowired
-    private Job job3;
+    private Job testJob;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
         JobParameters jobParameters = new JobParametersBuilder()
-                .addString("name", "23")
+                .addString("name", Long.toString(System.currentTimeMillis()))
                 .toJobParameters();
 
-        jobLauncher.run(job3, jobParameters);
+        jobLauncher.run(testJob, jobParameters);
         System.out.println("job3 finish");
     }
 }
